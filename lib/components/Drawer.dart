@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../services/Bible.dart';
-import '../routes/Bible.dart';
+import '../routes/MainRoute.dart';
+import '../routes/BibleRoute.dart';
 
 Drawer _layout(List<Widget> children) {
   return Drawer(
@@ -16,9 +17,17 @@ Drawer _layout(List<Widget> children) {
   );
 }
 
-Drawer buildDrawer(Bible bible) {
+Drawer buildDrawer(BuildContext context, Bible bible) {
   return _layout(<Widget>[
-      Text('NASBible'),
+      FlatButton(
+        child: Text('Flutter Bible App'),
+        onPressed: () {
+          Navigator.popAndPushNamed(
+            context,
+            MainRoute.routeName,
+          );
+        },
+      ),
       Expanded(
         flex: 1,
         child: BookList(
@@ -29,8 +38,8 @@ Drawer buildDrawer(Bible bible) {
   );
 }
 
-Drawer buildBibleDrawer(Bible bible) {
-  return buildDrawer(bible);
+Drawer buildBibleDrawer(BuildContext context, Bible bible) {
+  return buildDrawer(context, bible);
 }
 
 class BookList extends StatefulWidget {
@@ -82,7 +91,6 @@ class _BookListState extends State<BookList> {
                 1,
             ),
           );
-          debugPrint('Load book ${_books[index].name}');
         },
       ),
     );

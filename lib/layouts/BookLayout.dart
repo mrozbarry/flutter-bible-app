@@ -56,14 +56,18 @@ class _BookLayoutState extends State<BookLayout> {
   Widget build(BuildContext context) {
     var title = _book == null
         ? ''
-        : _book.name;
+        : _book.name.trim();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        primary: true,
+        centerTitle: true,
       ),
-      drawer: buildDrawer(widget.bible),
-      endDrawer: buildBibleDrawer(widget.bible),
+
+      drawer: buildDrawer(context, widget.bible),
+      endDrawer: buildBibleDrawer(context, widget.bible),
+
       body: Center(
         child: Column(
           children: [

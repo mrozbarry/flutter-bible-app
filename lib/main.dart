@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './layouts/BookLayout.dart';
-
-import './routes/Bible.dart';
+import './routes/MainRoute.dart';
+import './routes/BibleRoute.dart';
 
 import './services/Bible.dart';
 
@@ -23,7 +22,7 @@ class NASBibleApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: <String, WidgetBuilder>{
-        '/': (context) => BookLayout(bible: bible, bookName: 'Genesis'),
+        MainRoute.routeName: (context) => MainRoute(bible: bible),
         BibleRoute.routeName: (context) => BibleRoute(bible: bible),
       },
     );
