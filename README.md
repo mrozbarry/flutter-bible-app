@@ -1,4 +1,4 @@
-# my_app
+# flutter_bible
 
 A new Flutter project.
 
