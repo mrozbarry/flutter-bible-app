@@ -6,17 +6,17 @@ import './routes/BibleRoute.dart';
 import './services/Bible.dart';
 
 void main() {
-  runApp(NASBibleApp());
+  runApp(FlutterBibleApp());
 }
 
-class NASBibleApp extends StatelessWidget {
+class FlutterBibleApp extends StatelessWidget {
   final Bible bible = Bible();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'NASBible',
+      title: 'Flutter Bible App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,

@@ -6,6 +6,11 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 
+enum Testament {
+  OldTestament,
+  NewTestament,
+}
+
 class Verse {
   final Bible bible;
 
@@ -125,6 +130,20 @@ class Book {
       data.length,
       (index) => Verse.fromResult(bible, data[index]),
     );
+  }
+
+  bool isOldTestament() {
+    return bookNumber <= 460;
+  }
+
+  bool isNewTestament() {
+    return bookNumber >= 470;
+  }
+
+  Testament testament() {
+    return isOldTestament()
+      ? Testament.OldTestament
+      : Testament.NewTestament;
   }
 }
 

@@ -25,9 +25,6 @@ class MainLayout extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              //child: Container(
-                  //child: Text('Body here...'),
-              //),
               child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text('My bible app'),
