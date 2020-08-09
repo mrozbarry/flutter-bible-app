@@ -49,7 +49,10 @@ class _AccordionState extends State<Accordion> with TickerProviderStateMixin {
 
   void _close(String sectionKey) {
     _controllers[sectionKey]
-        .animateTo(0, duration: Duration(milliseconds: 300));
+        .animateTo(
+          0,
+          duration: Duration(milliseconds: 150),
+        );
 
     setState(() {
       _opened = '';
@@ -58,7 +61,10 @@ class _AccordionState extends State<Accordion> with TickerProviderStateMixin {
 
   void _open(String sectionKey) {
     _controllers[sectionKey]
-        .animateTo(_controllers[sectionKey].upperBound, duration: Duration(milliseconds: 300));
+        .animateTo(
+          _controllers[sectionKey].upperBound,
+          duration: Duration(milliseconds: 150),
+        );
 
     setState(() {
       _opened = sectionKey;
@@ -97,18 +103,24 @@ class _AccordionState extends State<Accordion> with TickerProviderStateMixin {
       children: <Widget>[
         MaterialRaisedTextIconButton(
           label: Text(sectionKey),
-          icon: Icon(Icons.arrow_drop_down),
+          icon: _opened == sectionKey
+            ? Icon(Icons.arrow_drop_up)
+            : Icon(Icons.arrow_drop_down),
           onPressed: () {
             _toggle(sectionKey);
           },
           iconSide: IconSide.Right,
+          materialTapTargetSize: MaterialTapTargetSize.padded,
         ),
-        SizeTransition(
-          sizeFactor: CurvedAnimation(
-            parent: _controllers[sectionKey],
-            curve: Curves.easeInOut,
+        Padding(
+          padding: EdgeInsets.all(2.0),
+          child: SizeTransition(
+            sizeFactor: CurvedAnimation(
+              parent: _controllers[sectionKey],
+              curve: Curves.easeInOut,
+            ),
+            child: widget.accordionMap[sectionKey],
           ),
-          child: widget.accordionMap[sectionKey],
         ),
       ],
     );
