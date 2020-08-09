@@ -11,17 +11,73 @@ class Accordion extends StatefulWidget {
   _AccordionState createState() => _AccordionState();
 }
 
-class _AccordionState extends State<Accordion> {
-  String _opened = '';
+class _PendingAnimation {
+  final String sectionKey;
+  final bool open;
 
-  void _open(String sectionKey) async {
-    if (!widget.accordionMap.containsKey(sectionKey)) {
+  _PendingAnimation({this.sectionKey, this.open});
+}
+
+class _AccordionState extends State<Accordion> with TickerProviderStateMixin {
+  String _opened = '';
+  Map<String, AnimationController> _controllers = Map<String, AnimationController>();
+  _PendingAnimation _pendingAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.accordionMap.forEach((key, _) {
+      var controller = AnimationController(vsync: this);
+      controller.addStatusListener(onAnimationStatusChange);
+      _controllers.addAll({ key: controller });
+    });
+  }
+
+  void onAnimationStatusChange(AnimationStatus status) {
+    if (status != AnimationStatus.completed) {
+      return;
+    }
+    if (_pendingAnimation != null) {
+      if (_pendingAnimation.open) {
+        _open(_pendingAnimation.sectionKey);
+      } else {
+        _close(_pendingAnimation.sectionKey);
+      }
+      _pendingAnimation = null;
+    }
+  }
+
+  void _close(String sectionKey) {
+    _controllers[sectionKey]
+        .animateTo(0, duration: Duration(milliseconds: 300));
+
+    setState(() {
+      _opened = '';
+    });
+  }
+
+  void _open(String sectionKey) {
+    _controllers[sectionKey]
+        .animateTo(_controllers[sectionKey].upperBound, duration: Duration(milliseconds: 300));
+
+    setState(() {
+      _opened = sectionKey;
+    });
+  }
+
+  void _toggle(String sectionKey) {
+    _pendingAnimation = null;
+    if (sectionKey == _opened) {
+      _close(sectionKey);
+      return;
+    }
+    if (_opened == '') {
+      _open(sectionKey);
       return;
     }
 
-    setState(() {
-      _opened = _opened == sectionKey ? '' : sectionKey;
-    });
+    _pendingAnimation = _PendingAnimation(sectionKey: sectionKey, open: true);
+    _close(_opened);
   }
 
   @override
@@ -37,23 +93,24 @@ class _AccordionState extends State<Accordion> {
   }
 
   Widget section(String sectionKey) {
-    var children = <Widget>[
-      MaterialRaisedTextIconButton(
-        label: Text(sectionKey),
-        icon: Icon(Icons.arrow_drop_down),
-        onPressed: () {
-          _open(sectionKey);
-        },
-        iconSide: IconSide.Right,
-      ),
-    ];
-
-    if (_opened == sectionKey) {
-      children.add(widget.accordionMap[sectionKey]);
-    }
-
     return Column(
-      children: children,
+      children: <Widget>[
+        MaterialRaisedTextIconButton(
+          label: Text(sectionKey),
+          icon: Icon(Icons.arrow_drop_down),
+          onPressed: () {
+            _toggle(sectionKey);
+          },
+          iconSide: IconSide.Right,
+        ),
+        SizeTransition(
+          sizeFactor: CurvedAnimation(
+            parent: _controllers[sectionKey],
+            curve: Curves.easeInOut,
+          ),
+          child: widget.accordionMap[sectionKey],
+        ),
+      ],
     );
   }
 }
