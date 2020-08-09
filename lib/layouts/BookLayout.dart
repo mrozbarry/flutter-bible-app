@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../components/Drawer.dart';
 import '../components/Chapter.dart';
+import '../components/Heading.dart';
+import '../components/Buttons.dart';
 
 import '../services/Bible.dart';
 
@@ -19,7 +21,7 @@ class BookLayout extends StatefulWidget {
 
 class _BookLayoutState extends State<BookLayout> {
   Book _book;
-  int _chapters;
+  int _chapters = 0;
   PageController _controller = PageController(initialPage: 0);
 
   @override
@@ -37,7 +39,7 @@ class _BookLayoutState extends State<BookLayout> {
   void _load(String bookToFind) async {
     setState(() {
       _book = null;
-      _chapters = null;
+      _chapters = 0;
     });
 
     var book = await Book.findByBookName(widget.bible, bookToFind);
@@ -50,6 +52,40 @@ class _BookLayoutState extends State<BookLayout> {
 
     var chapter = min(widget.chapter, _chapters);
     _controller.jumpToPage(chapter - 1);
+  }
+
+  Drawer bookDrawer(BuildContext context) {
+    return drawerLayout(<Widget>[
+      heading('Chapters'),
+      ListBody(
+        children: List.generate(
+          _chapters == null ? 0 : _chapters,
+          (index) {
+            var chapter = index + 1;
+            return CustomButton(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Chapter $chapter',
+                    textAlign: TextAlign.start,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
+              onPressed: () {
+                _controller.jumpToPage(index);
+              },
+            );
+
+          },
+        ),
+      ),
+    ]);
   }
 
   @override
@@ -65,8 +101,8 @@ class _BookLayoutState extends State<BookLayout> {
         centerTitle: true,
       ),
 
-      drawer: buildDrawer(context, widget.bible),
-      endDrawer: buildBibleDrawer(context, widget.bible),
+      drawer: bookDrawer(context),
+      endDrawer: buildDrawer(context, widget.bible),
 
       body: Center(
         child: Column(
