@@ -55,7 +55,7 @@ class _ChapterState extends State<Chapter> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-            "Chapter ${widget.chapter}\n",
+            "Chapter ${widget.chapter}",
             style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
