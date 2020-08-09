@@ -7,12 +7,13 @@ import '../routes/BibleRoute.dart';
 
 import './Buttons.dart';
 import './Accordion.dart';
+import './Heading.dart';
 
-Drawer _layout(List<Widget> children) {
+Drawer drawerLayout(List<Widget> children) {
   return Drawer(
     child: Center(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(2.0, 50.0, 2.0, 2.0),
+        padding: EdgeInsets.fromLTRB(2.0, 0.0, 2.0, 2.0),
         child: ListView(
           children: children,
         ),
@@ -22,29 +23,32 @@ Drawer _layout(List<Widget> children) {
 }
 
 Drawer buildDrawer(BuildContext context, Bible bible) {
-  return _layout(<Widget>[
-      MaterialTextButton(
-        child: Text('Flutter Bible App'),
-        onPressed: () {
-          Navigator.popAndPushNamed(
-            context,
-            MainRoute.routeName,
-          );
-        },
-      ),
+  return drawerLayout(<Widget>[
+    heading('Application Navigation'),
 
-      Accordion(
-        accordionMap: {
-          'Old Testament': BookList(bible: bible, testament: Testament.OldTestament),
-          'New Testament': BookList(bible: bible, testament: Testament.NewTestament),
-        },
-      ),
-    ],
-  );
-}
+    Column(
+      children: [
+        MaterialTextButton(
+          child: Text('Home'),
+          onPressed: () {
+            Navigator.popAndPushNamed(
+              context,
+              MainRoute.routeName,
+            );
+          },
+        ),
+      ],
+    ),
 
-Drawer buildBibleDrawer(BuildContext context, Bible bible) {
-  return buildDrawer(context, bible);
+    heading('Read the Bible'),
+
+    Accordion(
+      accordionMap: {
+        'Old Testament': BookList(bible: bible, testament: Testament.OldTestament),
+        'New Testament': BookList(bible: bible, testament: Testament.NewTestament),
+      },
+    ),
+  ]);
 }
 
 class BookList extends StatefulWidget {
@@ -85,40 +89,38 @@ class _BookListState extends State<BookList> {
 
   @override
   Widget build(BuildContext context) {
-    if (_books == null) {
-      return Text('Loading books');
-    }
-
-    var children = List.generate(
-      _books.length,
-      (index) => MaterialTextButton(
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            _books[index].name.trim(),
-            textAlign: TextAlign.start,
-            softWrap: false,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12,
-            ),
-          ),
-        ),
-        onPressed: () {
-          Navigator.popAndPushNamed(
-            context,
-            BibleRoute.routeName,
-            arguments: BibleRouteArguments(
-                _books[index].name,
-                1,
-            ),
-          );
-        },
-      ),
-    );
+    var count = _books == null ? 0 : _books.length;
 
     return ListBody(
-      children: children,
+      children: List.generate(
+        count,
+        (index) => CustomButton(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                _books[index].name.trim(),
+                textAlign: TextAlign.start,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+          onPressed: () {
+            Navigator.popAndPushNamed(
+              context,
+              BibleRoute.routeName,
+              arguments: BibleRouteArguments(
+                  _books[index].name,
+                  1,
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }
