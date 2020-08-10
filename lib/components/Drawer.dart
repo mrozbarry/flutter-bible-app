@@ -24,9 +24,8 @@ Drawer drawerLayout(List<Widget> children) {
 
 Drawer buildDrawer(BuildContext context, Bible bible) {
   return drawerLayout(<Widget>[
-    heading('Application Navigation'),
-
-    Column(
+    heading('Flutter Bible'),
+    ListBody(
       children: [
         MaterialTextButton(
           child: Text('Home'),
@@ -41,7 +40,6 @@ Drawer buildDrawer(BuildContext context, Bible bible) {
     ),
 
     heading('Read the Bible'),
-
     Accordion(
       accordionMap: {
         'Old Testament': BookList(bible: bible, testament: Testament.OldTestament),
