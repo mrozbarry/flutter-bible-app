@@ -114,10 +114,7 @@ class _BookLayoutState extends State<BookLayout> {
               //child: Container(
                   //child: Text('Body here...'),
               //),
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: chapters(),
-              )
+              child: chapters(),
             ),
           ],
         ),

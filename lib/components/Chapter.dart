@@ -54,26 +54,53 @@ class _ChapterState extends State<Chapter> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-            "Chapter ${widget.chapter}",
-            style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+        ClipRRect(
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 6),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0, 1),
+                  blurRadius: 6,
+                ),
+              ],
             ),
+            child: Padding(
+              padding: EdgeInsets.only(top: 16, bottom: 16),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Chapter ${widget.chapter}",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
         Expanded(
           flex: 1,
-          child: SingleChildScrollView(
-            child: Text.rich(
-              TextSpan(
-                  children: <InlineSpan>[
-                    TextSpan(children: textSpans),
-                  ],
-                  style: TextStyle(
-                      letterSpacing: 0.5,
-                      fontSize: 16,
-                      height: 1.5,
-                  )
+          child: Padding(
+            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 64),
+                child: Text.rich(
+                  TextSpan(
+                      children: <InlineSpan>[
+                        TextSpan(children: textSpans),
+                      ],
+                      style: TextStyle(
+                          letterSpacing: 0.5,
+                          fontSize: 16,
+                          height: 1.5,
+                      )
+                  ),
+                ),
               ),
             ),
           ),
