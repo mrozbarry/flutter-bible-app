@@ -17,7 +17,7 @@ class Grid extends StatelessWidget {
       (children.length / columns).ceil(),
       (index) {
         var start = index * columns;
-        var end = min(children.length - 1, start + columns);
+        var end = min(children.length, start + columns);
         return children.sublist(start, end);
       }
     );
