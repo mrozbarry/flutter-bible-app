@@ -70,7 +70,6 @@ class Book {
   }
 
   static Future<Book> findByBookName(Bible bible, String bookName) async {
-    print('Book.findByBookName, $bible $bookName');
     final Database db = await bible.open();
 
     final List<Map<String, dynamic>> data = await db.query('books',

@@ -8,6 +8,7 @@ import '../routes/BibleRoute.dart';
 import './Buttons.dart';
 import './Accordion.dart';
 import './Heading.dart';
+import './Grid.dart';
 
 Drawer drawerLayout(List<Widget> children) {
   return Drawer(
@@ -89,7 +90,7 @@ class _BookListState extends State<BookList> {
   Widget build(BuildContext context) {
     var count = _books == null ? 0 : _books.length;
 
-    return ListBody(
+    return Grid(
       children: List.generate(
         count,
         (index) => CustomButton(

@@ -5,6 +5,7 @@ import '../components/Drawer.dart';
 import '../components/Chapter.dart';
 import '../components/Heading.dart';
 import '../components/Buttons.dart';
+import '../components/Grid.dart';
 
 import '../services/Bible.dart';
 
@@ -57,7 +58,8 @@ class _BookLayoutState extends State<BookLayout> {
   Drawer bookDrawer(BuildContext context) {
     return drawerLayout(<Widget>[
       heading('Chapters'),
-      ListBody(
+      Grid(
+        columns: 3,
         children: List.generate(
           _chapters == null ? 0 : _chapters,
           (index) {
@@ -67,7 +69,7 @@ class _BookLayoutState extends State<BookLayout> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Chapter $chapter',
+                    '$chapter',
                     textAlign: TextAlign.start,
                     softWrap: false,
                     overflow: TextOverflow.ellipsis,
